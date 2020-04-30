@@ -20,7 +20,7 @@ class App extends Component {
         <div className="container">
           <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <Link to={"/"} className="navbar-brand">
-              <h3>App by team  Alphas </h3>
+              <h3>App by team The Alphas </h3>
             </Link>
             <div
               className="collapse navbar-collapse"
