@@ -11,7 +11,7 @@ import * as serviceWorker from './serviceWorker';
 ReactDOM.render(
   <BrowserRouter>
     <App /> 
-    <login.component/>
+    
   </BrowserRouter>,
   document.getElementById('root')
 );
