@@ -1,29 +1,28 @@
 import React, { Component } from "react";
-import Form from "react-bootstrap/Form";
+//import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-
-// AppRegistry.registerComponent('navigation', () => App);
-
+import {Link, Switch, Route} from "react-router-dom";
 import axios from "axios";
-
+import Login from './login.component';
+import Signup from './signup.component';
 export default class Home extends Component {
   constructor(props) {
     super(props);
-    this.onChangeLogin = this.onChangeLogin.bind(this);
+    this.onChangeSearch = this.onChangeSearch.bind(this);
     this.onChangeSignup = this.onChangeSignup.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     
 
     this.state = {
-      person_login : " ",
+      search : " ",
       person_signup: " ",
     };
   }
 
-  onChangeLogin(e) {
+  onChangeSearch(e) {
     this.setState({
-      person_login: e.target.value,
+      search: e.target.value,
     });
   }
 
@@ -35,17 +34,17 @@ export default class Home extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    const obj = {
-      person_login: this.state.login,
-      person_signup: this.state.person_signup,
-    };
+    // const obj = {
+    //   search: this.state.search,
+    //   person_signup: this.state.person_signup,
+    // };
 
     axios
       .post("http://localhost:4000/person/add, obj")
       .then((res) => console.log(res.data));
 
     this.setState({
-      person_login: " ",
+      search: " ",
       person_signup: " ",
     });
   }
@@ -53,6 +52,7 @@ export default class Home extends Component {
   render() {
     return (
       <div className="button">
+       <Link to={"/login"}  >
         <Button
           variant="primary"
           value={this.state.search}
@@ -62,6 +62,11 @@ export default class Home extends Component {
         >
           Login
         </Button>
+        </Link>
+
+        <br></br>
+        
+        <Link to={"/signup"}  >
         <Button
           variant="secondary"
           value={this.state.person_signup}
@@ -71,6 +76,12 @@ export default class Home extends Component {
         >
           Signup
         </Button>
+        </Link>
+
+        <Switch>
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/signup" component={Signup} />
+        </Switch>
       </div>
     );
   }

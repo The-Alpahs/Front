@@ -1,97 +1,140 @@
 import React, { Component } from "react";
-import Form from "react-bootstrap/Form";
-
+//  import Form from "react-bootstrap/Form";
+import {Link, Switch, Route} from "react-router-dom";
 import axios from "axios";
-
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Search from './search.component';
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
 
 
 export default class Signup extends Component {
-    constructor(props) {
-        super(props); 
-        this.onChangePersonName = this.onChangePersonName.bind(this);
-        this.onChangePersonEmail = this.onChangePersonEmail.bind(this);
-        this.onChangePersonPassword = this.onChangePersonPassword.bind(this);
-        
-        this.onSubmit = this.onSubmit.bind(this);
+                 constructor(props) {
+                   super(props);
+                   this.onChangePersonName = this.onChangePersonName.bind(this);
+                   this.onChangePersonEmail = this.onChangePersonEmail.bind(
+                     this
+                   );
+                   this.onChangePersonPassword = this.onChangePersonPassword.bind(
+                     this
+                   );
+
+                   this.onSubmit = this.onSubmit.bind(this);
+
+                   this.state = {
+                     fullName: "",
+                     email: "",
+                     password: "",
+                   };
+                 }
+
+                 onChangePersonName(e) {
+                   this.setState({
+                     fullName: e.target.value,
+                   });
+                 }
+
+                 onChangePersonEmail(e) {
+                   this.setState({
+                     email: e.target.value,
+                   });
+                 }
+
+                 onChangePersonPassword(e) {
+                   this.setState({
+                     password: e.target.value,
+                   });
+                 }
+
+                 onSubmit(values) {
+                   // e.preventDefault();
+                   let obj = {
+                     fullName: values.fullName,
+                     email: values.email,
+                     password: values.password,
+                   };
+
+                   console.log(values.fullName);
+
+                   console.log(obj);
+
+                   axios
+                     .post("http://localhost:8080/user", obj)
+                     .then((res) => console.log(res.data));
+
+                   this.setState({
+                     fullName: "",
+                     email: "",
+                     password: "",
+                   });
+
+                   //condition...........
+                   //toast.error("Entered Successfully");
+                 }
+
+                 componentDidMount() {
+                
+                 }
 
 
-        this.state = {
-            person_name :'',
-            person_email :'',
-            person_password : '',
-        }
-    }
+                 render() {
+                   let { userName, email, password } = this.state;
+                   return (
+                     <div style={{ marginTop: 10 }}>
+                       <h3>Signup Form</h3>
+                       <ToastContainer position={toast.POSITION.TOP_RIGHT} />
 
-    onChangePersonName(e){
-        this.setState({
-            person_name : e.target.value
-        });
-    }
+                       <Formik
+                         initialValues={{ userName, email, password }}
+                         onSubmit={this.onSubmit}
+                         //  validateOnChange={false}
+                         //  validateOnBlur={false}
+                       >
+                         {(props) => (
+                           <Form>
+                             <div className="form-group">
+                               <label>Name </label>
+                               <Field
+                                 type="text"
+                                 name="fullName"
+                                 className="form-control"
+                               />
+                             </div>
 
-    onChangePersonEmail(e){
-        this.setState({
-            person_email: e.target.value
-        });
-    }
+                             <div className="form-group">
+                               <label>Email </label>
+                               <Field
+                                 className="form-control"
+                                 type="text"
+                                 name="email"
+                               />
+                             </div>
 
-    onChangePersonPassword(e){
-        this.setState({
-            person_password: e.target.value
-        });
-    }
+                             <div className="form-group">
+                               <label>Password </label>
+                               <Field
+                                 type="password"
+                                 name="password"
+                                 className="form-control"
+                               />
+                             </div>
 
-    onSubmit(e){
-        e.preventDefault();
-       const obj = {
-         person_name : this.state.person_name,
-         person_email : this.state.person_email,
-         person_password : this.state.person_password,
-           
-       };
+                             <div className="form-group">
+                               <input
+                                 type="submit"
+                                 value="Signup"
+                                 className="btn btn-primary"
+                               />
+                             </div>
+                           </Form>
+                         )}
+                       </Formik>
 
-       axios.post('http://localhost:4000/person/add, obj').then(res=> console.log(res.data));
-
-       this.setState({
-           person_name :'',
-           person_email :'',
-           person_password :''
-       })
-
-
-    }
-
-
-
-
-
-
-  render() {
-    return (
-      <div style={{ marginTop: 10 }}>
-        <h3>Signup Form</h3>
-        <Form onSubmit={this.onSubmit}>
-          <div className="form-group">
-            <label>Name </label>
-            <input type="text" className="form-control" />
-          </div>
-
-          <div className="form-group">
-            <label>Email </label>
-            <input type="text" className="form-control" />
-          </div>
-
-          <div className="form-group">
-            <label>Password </label>
-            <input type="text" className="form-control" />
-          </div>
-
-          <div className="form-group">
-            <input type="submit" value="Signup" className="btn btn-primary" />
-          </div>
-        </Form>
-      </div>
-    );
-  }
-}
+                       <Switch>
+                         <Route exact path="/search" component={Search} />
+                       </Switch>
+                     </div>
+                   );
+                 }
+               }
